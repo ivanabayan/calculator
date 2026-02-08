@@ -1,38 +1,60 @@
-static double? Calculator(int a, int b, char op, ref bool isRunning)
+using System;
+
+class Program
+{
+    static void Main()
     {
-        switch (op)
+        bool running = true;
+
+        while (running)
         {
-            case '+':
-                return a + b;
+            int first = ReadInt("Enter first number: ");
+            int second = ReadInt("Enter second number: ");
 
-            case '-':
-                return a - b;
+            string operation = ReadOperation();
 
-            case '*':
-                return a * b;
+            if (operation == "=")
+            {
+                running = false;
+                continue;
+            }
 
-            case '/':
-                if (b == 0)
-                {
-                    Console.WriteLine("Cannot divide by zero");
-                    return null;
-                }
-                return (double)a / b;
+            double? result = Calculator.Calculate(first, second, operation);
 
-            case '%':
-                if (b == 0)
-                {
-                    Console.WriteLine("Cannot modulo by zero");
-                    return null;
-                }
-                return a % b;
+            if (result == null && (operation == "/" || operation == "%") && second == 0)
+                Console.WriteLine("Cannot divide or modulo by zero");
+            else
+                Console.WriteLine($"Result: {Math.Round(result.Value, 2)}");
 
-            case '=':
-                isRunning = false;
-                return null;
-
-            default:
-                return null;
+            Console.WriteLine();
         }
+
+        Console.WriteLine("Program terminated.");
+    }
+
+    static int ReadInt(string message)
+    {
+        int number;
+        while (!int.TryParse(Read(message), out number))
+            Console.WriteLine("Invalid input. Please enter a whole number.");
+        return number;
+    }
+
+    static string ReadOperation()
+    {
+        while (true)
+        {
+            Console.Write("Choose operation (+, -, *, /, %, =): ");
+            string op = Console.ReadLine();
+            if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%" || op == "=")
+                return op;
+            Console.WriteLine("Incorrect operation. Try again.");
+        }
+    }
+
+    static string Read(string message)
+    {
+        Console.Write(message);
+        return Console.ReadLine();
     }
 }
