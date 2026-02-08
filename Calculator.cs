@@ -1,50 +1,23 @@
-using System;
-
-class Program
+public static class Calculator
 {
-    static void Main(string[] args)
+    public static double? Calculate(int first, int second, string operation)
     {
-        bool isRunning = true;
-
-        while (isRunning)
+        switch (operation)
         {
-            Console.Write("Enter first number: ");
-            int num1 = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Enter second number: ");
-            int num2 = Convert.ToInt32(Console.ReadLine());
-
-            char operation;
-            bool validOperation = false;
-
-            do
-            {
-                Console.Write("Choose operation (+,-,*,/,%,=): ");
-                operation = Convert.ToChar(Console.ReadLine());
-
-                if ("+-*/%=".Contains(operation))
-                {
-                    validOperation = true;
-                }
-                else
-                {
-                    Console.WriteLine("\nIncorrect Operation Used, please try again\n");
-                }
-
-            } while (!validOperation);
-
-            double? result = Calculator(num1, num2, operation, ref isRunning);
-
-            if (result != null && isRunning)
-            {
-                if (operation == '/')
-                    Console.WriteLine("\nResult: " + result.Value.ToString("0.00"));
-                else
-                    Console.WriteLine("\nResult: " + result);
-            }
-
-            Console.WriteLine();
+            case "+":
+                return first + second;
+            case "-":
+                return first - second;
+            case "*":
+                return first * second;
+            case "/":
+                if (second == 0) return null;
+                return (double)first / second;
+            case "%":
+                if (second == 0) return null;
+                return first % second;
+            default:
+                return null;
         }
-
-        Console.WriteLine("Program terminated.");
     }
+}
